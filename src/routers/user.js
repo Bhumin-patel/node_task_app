@@ -25,7 +25,7 @@ router.post('/users/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password)
         const token = await user.generateAuthToken()
-        res.send({ user, token })
+        res.status(200).send({ user, token })
     } catch (e) {
         res.status(400).send()
     }
@@ -118,7 +118,7 @@ router.post('/users/me/avatar', auth, upload.single('avatar'),async (req,res)=>{
     const buffer = await sharp(req.file.buffer).resize({ width:250, height:250}).png().toBuffer()
     req.user.avatar = buffer
     await req.user.save()
-    res.send()
+    res.status(200).send()
 },(error,req,res,next)=>{
     res.status(400).send({error: error.message})
 })
